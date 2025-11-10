@@ -1,3 +1,4 @@
+
 package ec.edu.espoch.hospitalariasejercicio.clases;
 
 public class UsuarioPaciente {

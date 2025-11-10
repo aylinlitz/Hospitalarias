@@ -14,11 +14,13 @@ public class HospitalariasEjercicio {
 
     public static void main(String[] args) {
        Atencion atencionUno=new Atencion(1, EstadoAtencion.REGISTRADA);
-       UsuarioPaciente usuariopacienteUno=new UsuarioPaciente("Paulo", "58963", 0.7, "Luis Guerra");
+       UsuarioPaciente usuariopacienteUno=new UsuarioPaciente("Paul", "655434", 30, "Alejandro Riera");
        atencionUno.cambiarEstado(EstadoAtencion.EN_TRIAJE);
        atencionUno.asignarPrioridad(CategoriaPrioridad.ROJO);
-       atencionUno.añadirObservacion("Dolor irradiado, sudoración");
+       atencionUno.añadirObservacion("Dolor irradiado, sudoracion");
        atencionUno.cambiarEstado(EstadoAtencion.EN_ATENCION);
+       
+       
        
        Metodo procedimiento1AtencionUno=new Metodo(CategoriaMetodo.ECG, 01);
        procedimiento1AtencionUno.costo=30.0;
@@ -45,8 +47,6 @@ public class HospitalariasEjercicio {
        System.out.println("");
        facturaUno.generarFactura(atencionUno, usuariopacienteUno);
        facturaUno.imprimirFactura();
-       
-       //2:05
        
        Atencion atencionDos=new Atencion(2, EstadoAtencion.REGISTRADA);
        Metodo procedimiento1AtencionDos=new Metodo(CategoriaMetodo.LABORATORIO, 28);

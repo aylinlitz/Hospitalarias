@@ -6,148 +6,182 @@ import ec.edu.espoch.hospitalariasejercicio.enumeracion.EstadoAtencion;
 import ec.edu.espoch.hospitalariasejercicio.enumeracion.CategoriaPrioridad;
   
 public class Atencion {
-    //Atributos
+
+    // Atributos
     public int identificadorAtencion;
     public EstadoAtencion estadoAtencion;
-    public Metodo[] metodo=new Metodo[2];
+    public Metodo[] metodo = new Metodo[2];
     public CategoriaPrioridad prioridad;
     public String observacion;
     public String indicacion;
     public String medicacion;
-    public String[] insumos= new String[2];
+    public String[] insumos = new String[2];
     public String motivoCancelacion;
     public double total;
-    
-    //Costructores
+
+  
     public Atencion(int identificadorAtencion, EstadoAtencion estadoAtencion) {
         this.identificadorAtencion = identificadorAtencion;
         this.estadoAtencion = estadoAtencion;
     }
-    
-    //Metodos
-    public boolean asignarPrioridad(CategoriaPrioridad prioridad){
-        boolean respuesta=false;
-        if(this.estadoAtencion==EstadoAtencion.EN_TRIAJE){
-            this.prioridad=prioridad;
-            respuesta=true;
+
+    public boolean asignarPrioridad(CategoriaPrioridad prioridad) {
+        if (this.estadoAtencion == EstadoAtencion.EN_TRIAJE) {
+            this.prioridad = prioridad;
+            return true;
         }
-        return respuesta;
+        return false;
     }
-    
-     public String agregarIndicacion(String indicacion){
-        return this.indicacion=indicacion;
+
+    public String agregarIndicacion(String indicacion) {
+        this.indicacion = indicacion;
+        return this.indicacion;
     }
-    
-    public String añadirObservacion(String observacion){ 
-        return this.observacion=observacion;
+
+    public String añadirObservacion(String observacion) {
+        this.observacion = observacion;
+        return this.observacion;
     }
-    
-    public boolean cambiarEstado(EstadoAtencion nuevoEstado){
-        boolean respuesta=false;
-        if(nuevoEstado==EstadoAtencion.ALTA_EMITIDA){
-           if(this.estadoAtencion==EstadoAtencion.LISTA_PARA_ALTA){
-               this.estadoAtencion=nuevoEstado;
-               respuesta=true;
-           }
-        } else{
-            this.estadoAtencion=nuevoEstado;
-            respuesta=true;
-        }
-        return respuesta;
-    }
-    
-    public boolean agregarMetodo(Metodo metodo){
-        boolean respuesta=false;
-        for(int i=0;i<metodo.length;i++){
-  
-            if (this.metodo[i]==null){ 
-                this.metodo[i]=metodo;
-                respuesta=true;
+
+    public boolean cambiarEstado(EstadoAtencion nuevoEstado) {
+
+        switch (nuevoEstado) {
+            case REGISTRADA:
+                if (estadoAtencion == EstadoAtencion.EN_TRIAJE || estadoAtencion == EstadoAtencion.REGISTRADA) {
+                    estadoAtencion = nuevoEstado;
+                    return true;
+                }
                 break;
+
+            case EN_TRIAJE:
+                if (estadoAtencion == EstadoAtencion.REGISTRADA) {
+                    estadoAtencion = nuevoEstado;
+                    return true;
+                }
+                break;
+
+            case EN_ATENCION:
+                if (estadoAtencion == EstadoAtencion.EN_TRIAJE) {
+                    estadoAtencion = nuevoEstado;
+                    return true;
+                }
+                break;
+
+            case LISTA_PARA_ALTA:
+                if (estadoAtencion == EstadoAtencion.EN_ATENCION) {
+                    estadoAtencion = nuevoEstado;
+                    return true;
+                }
+                break;
+
+            case ALTA_EMITIDA:
+                if (estadoAtencion == EstadoAtencion.LISTA_PARA_ALTA) {
+                    estadoAtencion = nuevoEstado;
+                    return true;
+                }
+                break;
+
+            case CANCELADA:
+                estadoAtencion = nuevoEstado;
+                return true;
+        }
+        return false;
+    }
+
+    // AGREGAR METODO
+    public boolean agregarMetodo(Metodo nuevoMetodo) {
+        for (int i = 0; i < metodo.length; i++) {
+            if (metodo[i] == null) {
+                metodo[i] = nuevoMetodo;
+                return true;
             }
         }
-        return respuesta;
+        return false;
     }
-    
-    public boolean quitarMetodo(Metodo elimMetodo){
-        // verifiar que existan espacios en el vector
-        boolean respuesta=false;
-        for(int i=0;i<metodo.length;i++){
-            //SI hay espacion añadir el item y retornar true
-            //si no hay retornar false
-            if (metodo[i]==elimMetodo){
-                metodo[i]=null;
-                respuesta=true;
+
+    public boolean quitarMetodo(Metodo elimMetodo) {
+        for (int i = 0; i < metodo.length; i++) {
+            if (metodo[i] == elimMetodo) {
+                metodo[i] = null;
+                return true;
             }
         }
-        return respuesta;
+        return false;
     }
-    
-    public boolean agregarInsumo(String insumo){
-        boolean respuesta=false;
-        for(int i=0;i<insumos.length;i++){
-            if (insumos[i]==null){
-                this.insumos[i]=insumo;
-                respuesta=true;
+
+    // AGREGAR INSUMO
+    public boolean agregarInsumo(String insumo) {
+        for (int i = 0; i < insumos.length; i++) {
+            if (insumos[i] == null) {
+                insumos[i] = insumo;
+                return true;
             }
         }
-        return respuesta;
+        return false;
     }
-    
-    public boolean quitarInsumo(String elimInsumo){
-        boolean respuesta=false;
-        for(int i=0;i<insumos.length;i++){
-            if(insumos[i]!=elimInsumo){
-            } else {
-                this.insumos[i]=null;
-                respuesta=true;
+
+    public boolean quitarInsumo(String elimInsumo) {
+        for (int i = 0; i < insumos.length; i++) {
+            if (elimInsumo.equals(insumos[i])) {
+                insumos[i] = null;
+                return true;
             }
         }
-        return respuesta;
+        return false;
     }
-    
-    public String ordenarMedicacion(String dosis){
-        return this.medicacion=dosis;
+
+    public String ordenarMedicacion(String dosis) {
+        medicacion = dosis;
+        return medicacion;
     }
-    
-    public boolean cambiarMedicacion(String dosisNueva, EstadoAtencion estadoActual){
-        boolean respuesta=false;
-        if(estadoActual!=EstadoAtencion.EN_ATENCION){
-            this.medicacion=dosisNueva;
-            respuesta=true;
-        }else{
-            System.out.println("No se puede cambiar la dosis en estado 'En Atencion'");
+
+    public boolean cambiarMedicacion(String dosisNueva, EstadoAtencion estadoActual) {
+        if (estadoActual != EstadoAtencion.EN_ATENCION) {
+            medicacion = dosisNueva;
+            return true;
+        } else {
+            System.out.println("No se puede cambiar la dosis en estado 'EN_ATENCION'");
+            return false;
         }
-        return respuesta;
     }
-    
-    public boolean cancelarAtencion(String motivo){
-        boolean respuesta=false;
-        if(this.estadoAtencion==EstadoAtencion.REGISTRADA || this.estadoAtencion==EstadoAtencion.EN_TRIAJE){
-            this.motivoCancelacion=motivo;
-            respuesta=true;
+
+    public boolean cancelarAtencion(String motivo) {
+        if (estadoAtencion == EstadoAtencion.REGISTRADA || estadoAtencion == EstadoAtencion.EN_TRIAJE) {
+            motivoCancelacion = motivo;
+            estadoAtencion = EstadoAtencion.CANCELADA;
+            return true;
         }
-        return respuesta;
+        return false;
     }
-    
-    public double calcCovertura(double cobertura){
-        double descuento=0;
-        total=calcTotal();
-        descuento=total*cobertura;
-        return this.total=total-descuento;
-    }
-    
-    public double calcTotal(){
-        double total=0;
-        for(int i=0;i<
-                o.length;i++){
-            total=total+this.metodo[i].costo;
-        }
+
+    public double calcCovertura(double cobertura) {
+        total = calcTotal();
+        double descuento = total * cobertura;
+        total = total - descuento;
         return total;
+    }
+
+    public double calcTotal() {
+        double suma = 0;
+        for (Metodo m : metodo) {
+            if (m != null) suma += m.costo;
+        }
+        return suma;
     }
 
     @Override
     public String toString() {
-        return "Atencion{" + "identificarAtencion=" + identificadorAtencion + ", estadoAtencion=" + estadoAtencion + ", metodo=" + metodo[0].categoriaMetodo + ", prioridad=" + prioridad + ", observacion=" + observacion + ", indicacion=" + indicacion + ", medicacion=" + medicacion + ", insumos=" + insumos[0] + ", motivoCancelacion=" + motivoCancelacion + ", total=" + total + '}';
+        return "Atencion{" +
+                "identificadorAtencion=" + identificadorAtencion +
+                ", estadoAtencion=" + estadoAtencion +
+                ", metodo=" + (metodo[0] != null ? metodo[0].categoriaMetodo : "N/A") +
+                ", prioridad=" + prioridad +
+                ", observacion='" + observacion + '\'' +
+                ", indicacion='" + indicacion + '\'' +
+                ", medicacion='" + medicacion + '\'' +
+                ", insumos=" + (insumos[0] != null ? insumos[0] : "N/A") +
+                ", motivoCancelacion='" + motivoCancelacion + '\'' +
+                ", total=" + total +
+                '}';
     }
 }
