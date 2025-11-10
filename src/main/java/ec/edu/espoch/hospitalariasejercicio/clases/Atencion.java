@@ -139,7 +139,8 @@ public class Atencion {
     
     public double calcTotal(){
         double total=0;
-        for(int i=0;i<metodo.length;i++){
+        for(int i=0;i<
+                o.length;i++){
             total=total+this.metodo[i].costo;
         }
         return total;
